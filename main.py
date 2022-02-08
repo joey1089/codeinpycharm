@@ -1,3 +1,7 @@
+from random import choice
+import re
+from traceback import print_tb
+
 MENU = {
     "espresso": {
         "ingredients": {
@@ -24,42 +28,47 @@ MENU = {
     }
 }
 
+profit = 0
 resources = {
     "water": 300,
     "milk": 200,
     "coffee": 100,
 }
 
-
-# TODO: 1. Print report of the coffee machine resources
-def format_data(item):
-    """ Format account into printable format: item-water,item-milk and item-coffee. without money. """
-    item_water = item["water"]
-    item_milk = item["milk"]
-    item_coffee = item["coffee"]
-    return f"Currently available resources:\n Water: {item_water}ml \n Milk: {item_milk}ml \n Coffee: {item_coffee}g"
+import os
 
 
-maintainers = input("Type 'off' to switch of the machine for maintenance or 'no' to continue : ").lower()
-count = 0
-while maintainers != "off":
-    count += 1
-    user_choice = input("What would you like? (espresso/latte/cappuccino): ")
-    if user_choice == "espresso":
-        print("It's $2.50")
-    elif user_choice == "latte":
-        print("It's $1.50")
+def clrscr():
+    if os.name == 'posix':
+        os.system('clear')
     else:
-        print("It's $3.00")
-    if count > 1:
-        break
-    print()
-
-# TODO: 2. Check the resources are sufficient?
-
- get_report = format_data(resources)     # check if the resources are sufficient for making anymore coffees
+        os.system('cls')
 
 
-# TODO: 3. Process Coins
-# TODO: 4. Check transaction is successful?
-# TODO: 5. Make Coffee
+def get_report(resource, money):
+    """ Reports all resources available for making different coffee flavours. """
+    item_water = resource['water']
+    item_milk = resource['milk']
+    item_coffee = resource['coffee']
+    money = profit
+    return f"\n Water : {item_water} ml  \n Milk : {item_milk} ml \n Coffee: {item_coffee} g\n Money :$ {money}\n"
+
+def is_sufficient(drink_name,use_ingredients):
+    for item in use_ingredients:
+        if use_ingredients[item] > resources[item]:
+            print(f"Sorry there is not enough {item}.")
+            return False
+        print("Insert required coins")
+        return True
+
+#TODO : 1.Check if the machine is on and will want to switch it off for maintenance
+is_on = True
+while is_on:
+    choice = input("What would you like? (espresso/latte/cappuccino):")
+    if choice == "off":
+        is_on = False
+    elif choice == "report":
+        print(get_report(resources,profit))
+    else:
+        drink = MENU[choice]
+        is_sufficient(resources,drink['ingredients'])
