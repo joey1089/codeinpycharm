@@ -61,6 +61,14 @@ def is_sufficient(drink_name,use_ingredients):
         print("Insert required coins")
         return True
 
+def process_coins():
+    total = int(input("How many quarters : ")) * 0.25
+    total += int(input("how many dims : ")) * 0.10
+    total += int(input("how many nickles : ")) * 0.05
+    total += int(input("how many pennies : ")) * 0.01
+    return total
+
+
 #TODO : 1.Check if the machine is on and will want to switch it off for maintenance
 is_on = True
 while is_on:
@@ -71,4 +79,6 @@ while is_on:
         print(get_report(resources,profit))
     else:
         drink = MENU[choice]
-        is_sufficient(resources,drink['ingredients'])
+        if is_sufficient(resources,drink['ingredients']):
+            payment = process_coins()
+            print(f"money received ${payment}")
