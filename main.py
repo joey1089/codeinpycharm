@@ -66,7 +66,7 @@ def process_coins():
     total += int(input("how many dims : ")) * 0.10
     total += int(input("how many nickles : ")) * 0.05
     total += int(input("how many pennies : ")) * 0.01
-    return total
+    return round(total,2)
 
 
 #TODO : 1.Check if the machine is on and will want to switch it off for maintenance
